@@ -13,7 +13,7 @@ class Ui(QtWidgets.QDialog):
         self.show()
     def SingleBrowse(self):
 #Open directory
-        filePath = QtWidgets.QFileDialog.getOpenFileNames(self, 'File Browser', "-/Desktop/",'*.txt.')
+        filePath = QtWidgets.QFileDialog.getOpenFileNames(self, 'File Browser', "-/Desktop/",'')
         print('filePath', filePath, '\n')
         fileHandle = open( filePath, 'r')
 

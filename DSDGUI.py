@@ -1,6 +1,7 @@
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
 import os, sys
 
+#Loading UI
 class Ui(QtWidgets.QDialog):
     def __init__(self):
         super(Ui, self).__init__()
@@ -11,6 +12,7 @@ class Ui(QtWidgets.QDialog):
         ActionFolderButton.clicked.connect(self.SingleBrowse)
         self.show()
     def SingleBrowse(self):
+#Open directory
         filePath = QtWidgets.QFileDialog.getOpenFileNames(self, 'File Browser', "-/Desktop/",'*.txt.')
         print('filePath', filePath, '\n')
         fileHandle = open( filePath, 'r')

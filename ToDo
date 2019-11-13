@@ -1,0 +1,5 @@
+- Actions und Decisions gleichzeitig öffnen (Behaviour-Ordner) + importieren in ListWidget
+- .DSD-Dateien anzeigen, auflisten, eine öffnen
+- Save automatisch in denselben Ordner 
+
+- Neu-Button mit Ordner, dann Struktur erstellen (Actions-Ordner, Decisions-Ordner, .DSD-Datei)

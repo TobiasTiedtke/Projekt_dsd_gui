@@ -67,6 +67,9 @@
                 <height>161</height>
                </rect>
               </property>
+              <property name="dragDropMode">
+               <enum>QAbstractItemView::DragOnly</enum>
+              </property>
              </widget>
             </widget>
            </item>
@@ -148,6 +151,9 @@
                 <height>161</height>
                </rect>
               </property>
+              <property name="dragDropMode">
+               <enum>QAbstractItemView::DragOnly</enum>
+              </property>
              </widget>
             </widget>
            </item>
@@ -180,6 +186,12 @@
               <width>281</width>
               <height>421</height>
              </rect>
+            </property>
+            <property name="dragDropMode">
+             <enum>QAbstractItemView::DropOnly</enum>
+            </property>
+            <property name="uniformItemSizes">
+             <bool>true</bool>
             </property>
            </widget>
           </widget>

@@ -34,41 +34,46 @@ class Ui(QtWidgets.QDialog):
 #browsing for a folder and changing it to a string
         filePath = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select a folder:', "-/Desktop/", QtWidgets.QFileDialog.ShowDirsOnly)
         filePath = str(filePath)
+#Adding variables for the various lists
         ActionFilePath = filePath + "/actions/"
         DecisionFilePath = filePath + "/decisions/"
         DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
         ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
-	DSDCount = 0
-#Extracting the files in the actions-Folder from the selected path and adding it to the ActionList
+
+#Extracting the classes in the files in the actions-Folder from the selected path and adding it to the ActionList
         onlyfiles = [f for f in os.listdir(ActionFilePath) if os.path.isfile(os.path.join(ActionFilePath, f))]
         for f in onlyfiles:
-            item = QtWidgets.QListWidgetItem()
-            ActionList.addItem(item)
-            if f != "__init__.py":
-                f = str(f)
-                item.setText(f)
-                ActionList.addItem(item)
-#Extracting the files in the decisions-Folder from the selected path and adding it to the DecisionList
+	    if f != "__init__.py":
+		f = open(ActionFilePath + "/" + f, 'r')
+            	for line in f: 
+		    line = str(line)
+		    if line.startswith("class"):
+			line = line.split(" ")[1]
+			line = line.split("(")[0]
+		    	item = QtWidgets.QListWidgetItem()
+			ActionList.addItem(item)
+			item.setText(str(line))
+			ActionList.addItem(item)
+
+#Extracting the classes in the files in the decisions-Folder from the selected path and adding it to the DecisionList
         onlyfiles = [f for f in os.listdir(DecisionFilePath) if os.path.isfile(os.path.join(DecisionFilePath, f))]
         for f in onlyfiles:
-            item = QtWidgets.QListWidgetItem()
-            DecisionList.addItem(item)
-            if f != "__init__.py":
-                f = str(f)
-                item.setText(f)
-                DecisionList.addItem(item)
-#Add the .dsd to the right side
-#	onlyfiles = [f for f in os.listdir(filePath) if os.path.isfile(os.path.join(filePath, f))]
-#	for f in onlyfiles:
-#	    if f.endswith('.dsd'):
-#		DSDCount = DSDCount + 1
-#	if DSDCount > 1:
-#	    warnings.warn("There are too many dsd-files")
+	    if f != "__init__.py":
+		f = open(DecisionFilePath + "/" + f, 'r')
+            	for line in f: 
+		    line = str(line)
+		    if line.startswith("class"):
+			line = line.split(" ")[1]
+			line = line.split("(")[0]
+		    	item = QtWidgets.QListWidgetItem()
+			DecisionList.addItem(item)
+			item.setText(str(line))
+			DecisionList.addItem(item)
 	
 	dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
 	if len(dsd_files) != 1:
-	    raise ValueError('There should be exactly one .dsd-file in the current directory')
+	    warnings.warn("There has to be exactly one dsd-file")
 	DSDFile = open (filePath + "/" + dsd_files[0], "r")
 	for line in DSDFile:
             item = QtWidgets.QListWidgetItem()

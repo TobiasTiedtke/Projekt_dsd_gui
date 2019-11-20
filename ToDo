@@ -1,5 +1,7 @@
-- Actions und Decisions gleichzeitig öffnen (Behaviour-Ordner) + importieren in ListWidget
-- .DSD-Dateien anzeigen, auflisten, eine öffnen
+!- Actions und Decisions gleichzeitig öffnen (Behaviour-Ordner) + importieren in ListWidget
+!- .DSD-Dateien öffnen
+- Einzelne classes aus den .py-Dateien holen
 - Save automatisch in denselben Ordner 
 
+- DSD-files anzeigen, auflisten, eine auswählen (wenn mehrere) 
 - Neu-Button mit Ordner, dann Struktur erstellen (Actions-Ordner, Decisions-Ordner, .DSD-Datei)

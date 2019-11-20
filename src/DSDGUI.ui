@@ -31,7 +31,7 @@
            <item>
             <widget class="QLabel" name="DecisionLabel">
              <property name="text">
-              <string>             Decisions</string>
+              <string>      Decisions       </string>
              </property>
             </widget>
            </item>
@@ -102,7 +102,7 @@
                </rect>
               </property>
               <property name="text">
-               <string>               Actions</string>
+               <string>        Actions</string>
               </property>
              </widget>
             </widget>
@@ -172,6 +172,16 @@
            <property name="title">
             <string/>
            </property>
+           <widget class="QListWidget" name="DSDList">
+            <property name="geometry">
+             <rect>
+              <x>0</x>
+              <y>0</y>
+              <width>281</width>
+              <height>421</height>
+             </rect>
+            </property>
+           </widget>
           </widget>
          </item>
         </layout>

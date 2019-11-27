@@ -16,7 +16,21 @@ class Ui(QtWidgets.QDialog):
         ReadButton.clicked.connect(self.SingleBrowse)
 	SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
 	SaveButton.clicked.connect(self.SaveButtonClick)
+	EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
+	EditButton.clicked.connect(self.EditButtonClick)
         self.show()
+
+    def EditButtonClick(self):
+        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+	for i in range(DSDList.count()):
+           DSDList.closePersistentEditor(DSDList.item(i))
+	sel_items = DSDList.selectedItems()
+	for item in sel_items:
+	    DSDList.openPersistentEditor(item)
+#	text, okPressed = QtWidgets.QInputDialog.getText(self, "Add to the list item","Your Change:", QtWidgets.QLineEdit.Normal, ""), QtWidgets.QInputDialog.setText(str(sel_items))
+#        if okPressed and text != '':
+#	    for item in sel_items:
+#	        item.setText(item.text() + text)
 
 #Function to enable drag of text
     def dragEnterEvent(self, e):
@@ -59,11 +73,28 @@ class Ui(QtWidgets.QDialog):
 #Extracting the classes in the files in the decisions-Folder from the selected path and adding it to the DecisionList
         onlyfiles = [f for f in os.listdir(DecisionFilePath) if os.path.isfile(os.path.join(DecisionFilePath, f))]
         for f in onlyfiles:
+	    returners = 0
 	    if f != "__init__.py":
 		f = open(DecisionFilePath + "/" + f, 'r')
             	for line in f: 
-		    line = str(line)
-		    if line.startswith("class"):
+		    if "def _register():" in line:
+			returners = 1
+		    elif returners == 1 and "def _register():" not in line:
+			if "[" in line:			
+			    line = line.split("[")[1]
+			lineItems = []
+			lineItems.extend(line.split(","))
+			for items in lineItems:
+			    if items.strip():
+				lineItem = str(items.split(" ")[-1])
+				lineItem = str(items.split("'")[1])
+				item = QtWidgets.QListWidgetItem()
+				DecisionList.addItem(item)
+				item.setText(lineItem)
+				DecisionList.addItem(item)
+			    if "]" in line:
+				returners = 0
+		    elif line.startswith("class"):
 			line = line.split(" ")[1]
 			line = line.split("(")[0]
 		    	item = QtWidgets.QListWidgetItem()

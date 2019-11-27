@@ -6,15 +6,24 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
-    <height>499</height>
+    <width>931</width>
+    <height>720</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
   </property>
-  <layout class="QVBoxLayout" name="verticalLayout_9">
-   <item>
+  <property name="sizeGripEnabled">
+   <bool>false</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
       <layout class="QVBoxLayout" name="verticalLayout_3">
@@ -55,6 +64,12 @@
           <layout class="QGridLayout" name="DecisionLayout">
            <item row="0" column="0">
             <widget class="QGroupBox" name="groupBox">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string/>
              </property>
@@ -63,8 +78,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>321</width>
-                <height>161</height>
+                <width>451</width>
+                <height>251</height>
                </rect>
               </property>
               <property name="dragDropMode">
@@ -139,6 +154,12 @@
           <layout class="QGridLayout" name="ActionGrid">
            <item row="0" column="0">
             <widget class="QGroupBox" name="groupBox_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string/>
              </property>
@@ -147,9 +168,15 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>321</width>
-                <height>161</height>
+                <width>451</width>
+                <height>251</height>
                </rect>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <property name="dragDropMode">
                <enum>QAbstractItemView::DragOnly</enum>
@@ -169,6 +196,15 @@
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QGroupBox" name="groupBox_3">
+           <property name="enabled">
+            <bool>true</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+             <horstretch>1</horstretch>
+             <verstretch>1</verstretch>
+            </sizepolicy>
+           </property>
            <property name="acceptDrops">
             <bool>true</bool>
            </property>
@@ -183,9 +219,15 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>281</width>
-              <height>421</height>
+              <width>451</width>
+              <height>641</height>
              </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="MinimumExpanding" vsizetype="MinimumExpanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="dragDropMode">
              <enum>QAbstractItemView::DropOnly</enum>
@@ -202,7 +244,7 @@
      </item>
     </layout>
    </item>
-   <item>
+   <item row="1" column="0">
     <widget class="QFrame" name="frame">
      <property name="minimumSize">
       <size>
@@ -279,9 +321,23 @@
        <string>Read</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="EditButton">
+      <property name="geometry">
+       <rect>
+        <x>610</x>
+        <y>0</y>
+        <width>97</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Edit</string>
+      </property>
+     </widget>
      <zorder>DeleteAllButton</zorder>
      <zorder>SaveButton</zorder>
      <zorder>ReadButton</zorder>
+     <zorder>EditButton</zorder>
     </widget>
    </item>
   </layout>

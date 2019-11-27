@@ -3,104 +3,131 @@ import os, sys
 import SaveButton as SaveB
 import warnings
 
-#Loading UI
+
+# Loading UI
 class Ui(QtWidgets.QDialog):
+    resized = QtCore.pyqtSignal()
     def __init__(self):
         super(Ui, self).__init__()
         uic.loadUi('DSDGUI.ui', self)
-        DecisionFolderButton = self.findChild(QtWidgets.QPushButton, 'DecisionFolderButton')
-        DecisionFolderButton.clicked.connect(self.SingleBrowse)
-        ActionFolderButton = self.findChild(QtWidgets.QPushButton, 'ActionFolderButton')
-        ActionFolderButton.clicked.connect(self.SingleBrowse)
         ReadButton = self.findChild(QtWidgets.QPushButton, 'ReadButton')
         ReadButton.clicked.connect(self.SingleBrowse)
-	SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
-	SaveButton.clicked.connect(self.SaveButtonClick)
-	EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
-	EditButton.clicked.connect(self.EditButtonClick)
+        SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
+        SaveButton.clicked.connect(self.SaveButtonClick)
+        DeleteAllButton = self.findChild(QtWidgets.QPushButton, 'DeleteAllButton')
+        DeleteAllButton.clicked.connect(self.DeleteAll)
+        EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
+  	    EditButton.clicked.connect(self.EditButtonClick)
+        SaveButton.setEnabled(False)
+        DeleteAllButton.setEnabled(False)
+        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint |
+            QtCore.Qt.WindowMaximizeButtonHint |
+            QtCore.Qt.CustomizeWindowHint |
+            QtCore.Qt.WindowTitleHint |
+            QtCore.Qt.WindowCloseButtonHint |
+            QtCore.Qt.WindowStaysOnTopHint
+        )
         self.show()
+
+    def DeleteAll(self):
+        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+        DSDList.clear()
+
+    def resizeEvent(self, event):
+        self.resized.emit()
+        return super(Ui, self).resizeEvent(event)
 
     def EditButtonClick(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
-	for i in range(DSDList.count()):
+      	for i in range(DSDList.count()):
            DSDList.closePersistentEditor(DSDList.item(i))
-	sel_items = DSDList.selectedItems()
-	for item in sel_items:
-	    DSDList.openPersistentEditor(item)
+	      sel_items = DSDList.selectedItems()
+	      for item in sel_items:
+	          DSDList.openPersistentEditor(item)
 #	text, okPressed = QtWidgets.QInputDialog.getText(self, "Add to the list item","Your Change:", QtWidgets.QLineEdit.Normal, ""), QtWidgets.QInputDialog.setText(str(sel_items))
 #        if okPressed and text != '':
 #	    for item in sel_items:
 #	        item.setText(item.text() + text)
-
-#Function to enable drag of text
+      
+    # Function to enable drag of text
     def dragEnterEvent(self, e):
 
         if e.mimeData().hasFormat('text/plain'):
             e.accept()
         else:
             e.ignore()
-#Function to drop text
+
+    # Function to drop text
     def dropEvent(self, e):
 
         self.setText(e.mimeData().text())
 
     def SingleBrowse(self):
-#browsing for a folder and changing it to a string
-        filePath = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select a folder:', "-/Desktop/", QtWidgets.QFileDialog.ShowDirsOnly)
+        # browsing for a folder and changing it to a string
+        filePath = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select a folder:', "-/Desktop/",
+                                                              QtWidgets.QFileDialog.ShowDirsOnly)
         filePath = str(filePath)
-#Adding variables for the various lists
+        # Adding variables for the various lists
         ActionFilePath = filePath + "/actions/"
         DecisionFilePath = filePath + "/decisions/"
         DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
-        ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+        DecisionList.setDragEnabled(True)
+        DSDList.setAcceptDrops(True)
+        ActionList.setDragEnabled(True)
+        DeleteAllButton = self.findChild(QtWidgets.QPushButton, 'DeleteAllButton')
+        DeleteAllButton.setEnabled(True)
+        SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
+        SaveButton.setEnabled(True)
 
-#Extracting the classes in the files in the actions-Folder from the selected path and adding it to the ActionList
+
+
+
+        # Extracting the classes in the files in the actions-Folder from the selected path and adding it to the ActionList
         onlyfiles = [f for f in os.listdir(ActionFilePath) if os.path.isfile(os.path.join(ActionFilePath, f))]
         for f in onlyfiles:
-	    if f != "__init__.py":
-		f = open(ActionFilePath + "/" + f, 'r')
-            	for line in f: 
-		    line = str(line)
-		    if line.startswith("class"):
-			line = line.split(" ")[1]
-			line = line.split("(")[0]
-		    	item = QtWidgets.QListWidgetItem()
-			ActionList.addItem(item)
-			item.setText(str(line))
-			ActionList.addItem(item)
+            if f != "__init__.py":
+                f = open(ActionFilePath + "/" + f, 'r')
+                for line in f:
+                    line = str(line)
+                    if line.startswith("class"):
+                        line = line.split(" ")[1]
+                        line = line.split("(")[0]
+                        item = QtWidgets.QListWidgetItem()
+                        ActionList.addItem(item)
+                        item.setText(str(line))
+                        ActionList.addItem(item)
 
-#Extracting the classes in the files in the decisions-Folder from the selected path and adding it to the DecisionList
+# Extracting the classes in the files in the decisions-Folder from the selected path and adding it to the DecisionList
         onlyfiles = [f for f in os.listdir(DecisionFilePath) if os.path.isfile(os.path.join(DecisionFilePath, f))]
         for f in onlyfiles:
-	    returners = 0
-	    if f != "__init__.py":
-		f = open(DecisionFilePath + "/" + f, 'r')
-            	for line in f: 
-		    if "def _register():" in line:
-			returners = 1
-		    elif returners == 1 and "def _register():" not in line:
-			if "[" in line:			
-			    line = line.split("[")[1]
-			lineItems = []
-			lineItems.extend(line.split(","))
-			for items in lineItems:
-			    if items.strip():
-				lineItem = str(items.split(" ")[-1])
-				lineItem = str(items.split("'")[1])
-				item = QtWidgets.QListWidgetItem()
-				DecisionList.addItem(item)
-				item.setText(lineItem)
-				DecisionList.addItem(item)
-			    if "]" in line:
-				returners = 0
-		    elif line.startswith("class"):
-			line = line.split(" ")[1]
-			line = line.split("(")[0]
-		    	item = QtWidgets.QListWidgetItem()
-			DecisionList.addItem(item)
-			item.setText(str(line))
-			DecisionList.addItem(item)
+	        returners = 0
+	        if f != "__init__.py":
+		        f = open(DecisionFilePath + "/" + f, 'r')
+            for line in f: 
+		          if "def _register():" in line:
+			          returners = 1
+		          elif returners == 1 and "def _register():" not in line:
+			          if "[" in line:			
+			            line = line.split("[")[1]
+              lineItems = []
+              lineItems.extend(line.split(","))
+              for items in lineItems:
+                if items.strip():
+                  lineItem = str(items.split(" ")[-1])
+                  lineItem = str(items.split("'")[1])
+                  item = QtWidgets.QListWidgetItem()
+                  DecisionList.addItem(item)
+                  item.setText(lineItem)
+                  DecisionList.addItem(item)
+              if "]" in line:
+                returners = 0
+              elif line.startswith("class"):
+                line = line.split(" ")[1]
+                line = line.split("(")[0]
+                item = QtWidgets.QListWidgetItem()
+                item.setText(str(line))
+                DecisionList.addItem(item)
 	
 	dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
 	if len(dsd_files) != 1:
@@ -115,24 +142,20 @@ class Ui(QtWidgets.QDialog):
                 DSDList.addItem(item)
 
     def SaveButtonClick(self):
-#TODO: Change FileName and Path to actual input-windows
-	FileName = "StandardName"
-	text, ok = QtWidgets.QInputDialog.getText(self, 'Input Dialog', 'Enter Filename:')
-	if ok:
-	    FileName = str(text)
-	Path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select a folder:', "-/Desktop/", QtWidgets.QFileDialog.ShowDirsOnly)
-#writes a file with a specific name and the structure needed for action-elements. 
-	completeName = os.path.join(Path, FileName + ".py") 
-	f = open(completeName, 'w')
-	f.write("This has to be done in the future")
+        # TODO: Change FileName and Path to actual input-windows
+        FileName = "StandardName"
+        text, ok = QtWidgets.QInputDialog.getText(self, 'Input Dialog', 'Enter Filename:')
+        if ok:
+            FileName = str(text)
+        Path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select a folder:', "-/Desktop/",
+                                                          QtWidgets.QFileDialog.ShowDirsOnly)
+        # writes a file with a specific name and the structure needed for action-elements.
+        completeName = os.path.join(Path, FileName + ".py")
+        f = open(completeName, 'w')
+        f.write("This has to be done in the future")
 
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
     window = Ui()
     sys.exit(app.exec_())
-
-
-
-
-

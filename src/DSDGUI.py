@@ -8,27 +8,33 @@ import warnings
 class Ui(QtWidgets.QDialog):
     resized = QtCore.pyqtSignal()
     def __init__(self):
-        super(Ui, self).__init__()
-        uic.loadUi('DSDGUI.ui', self)
-        ReadButton = self.findChild(QtWidgets.QPushButton, 'ReadButton')
-        ReadButton.clicked.connect(self.SingleBrowse)
-        SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
-        SaveButton.clicked.connect(self.SaveButtonClick)
-        DeleteAllButton = self.findChild(QtWidgets.QPushButton, 'DeleteAllButton')
-        DeleteAllButton.clicked.connect(self.DeleteAll)
-        EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
-  	EditButton.clicked.connect(self.EditButtonClick)
-        SaveButton.setEnabled(False)
-        DeleteAllButton.setEnabled(False)
-        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint |
-            QtCore.Qt.WindowMaximizeButtonHint |
-            QtCore.Qt.CustomizeWindowHint |
-            QtCore.Qt.WindowTitleHint |
-            QtCore.Qt.WindowCloseButtonHint |
-            QtCore.Qt.WindowStaysOnTopHint
-        )
-        self.show()
-
+            super(Ui, self).__init__()
+            uic.loadUi('DSDGUI.ui', self)
+            ReadButton = self.findChild(QtWidgets.QPushButton, 'ReadButton')
+            ReadButton.clicked.connect(self.SingleBrowse)
+            SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
+            SaveButton.clicked.connect(self.SaveButtonClick)
+            DeleteAllButton = self.findChild(QtWidgets.QPushButton, 'DeleteAllButton')
+            DeleteAllButton.clicked.connect(self.DeleteAll)
+            SingleDeleteButton = self.findChild(QtWidgets.QPushButton, 'SingleDeleteButton')
+            SingleDeleteButton.clicked.connect(self.SingleDelete)
+            SingleDeleteButton.setEnabled(False)
+            EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
+            EditButton.clicked.connect(self.EditButtonClick)
+            EditButton.setEnabled(False)
+            SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
+            SortButton.setEnabled(False)
+            SaveButton.setEnabled(False)
+            DeleteAllButton.setEnabled(False)
+            self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint |
+                QtCore.Qt.WindowMaximizeButtonHint |
+                QtCore.Qt.CustomizeWindowHint |
+                QtCore.Qt.WindowTitleHint |
+                QtCore.Qt.WindowCloseButtonHint |
+                QtCore.Qt.WindowStaysOnTopHint
+            )
+            self.show()
+            
     def DeleteAll(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
         DSDList.clear()
@@ -38,12 +44,13 @@ class Ui(QtWidgets.QDialog):
         return super(Ui, self).resizeEvent(event)
 
     def EditButtonClick(self):
-        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
-      	for i in range(DSDList.count()):
-           DSDList.closePersistentEditor(DSDList.item(i))
-	   sel_items = DSDList.selectedItems()
-	   for item in sel_items:
-	       DSDList.openPersistentEditor(item)
+
+            DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+            for i in range(DSDList.count()):
+               DSDList.closePersistentEditor(DSDList.item(i))
+            sel_items = DSDList.selectedItems()
+            for item in sel_items:
+               DSDList.openPersistentEditor(item)
 #	text, okPressed = QtWidgets.QInputDialog.getText(self, "Add to the list item","Your Change:", QtWidgets.QLineEdit.Normal, ""), QtWidgets.QInputDialog.setText(str(sel_items))
 #        if okPressed and text != '':
 #	    for item in sel_items:
@@ -77,9 +84,17 @@ class Ui(QtWidgets.QDialog):
         DSDList.setAcceptDrops(True)
         ActionList.setDragEnabled(True)
         DeleteAllButton = self.findChild(QtWidgets.QPushButton, 'DeleteAllButton')
+        SingleDelete = self.findChild(QtWidgets.QPushButton, 'SingleDeleteButton')
+        SingleDelete.setEnabled(True)
         DeleteAllButton.setEnabled(True)
         SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
         SaveButton.setEnabled(True)
+        SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
+        SaveButton.clicked.connect(self.SaveButtonClick)
+        EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
+        EditButton.setEnabled(True)
+        SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
+        SortButton.setEnabled(True)
 
         # Extracting the classes in the files in the actions-Folder from the selected path and adding it to the ActionList
         onlyfiles = [f for f in os.listdir(ActionFilePath) if os.path.isfile(os.path.join(ActionFilePath, f))]
@@ -99,48 +114,56 @@ class Ui(QtWidgets.QDialog):
 # Extracting the classes in the files in the decisions-Folder from the selected path and adding it to the DecisionList
         onlyfiles = [f for f in os.listdir(DecisionFilePath) if os.path.isfile(os.path.join(DecisionFilePath, f))]
         for f in onlyfiles:
-	        returners = 0
-	        if f != "__init__.py":
-			f = open(DecisionFilePath + "/" + f, 'r')
-        	for line in f: 
-		  	if "def _register():" in line:
-			          returners = 1
-		  	elif returners == 1 and "def _register():" not in line:
-			        if "[" in line:			
-			            	line = line.split("[")[1]
-		              	lineItems = []
-		              	lineItems.extend(line.split(","))
-				for items in lineItems:
-					if items.strip():
-						lineItem = str(items.split(" ")[-1])
-						lineItem = str(items.split("'")[1])
-						item = QtWidgets.QListWidgetItem()
-						DecisionList.addItem(item)
-						item.setText(lineItem)
-						DecisionList.addItem(item)
-					if "]" in line:
-						returners = 0
-              		elif line.startswith("class"):
-				line = line.split(" ")[1]
-				line = line.split("(")[0]
-				item = QtWidgets.QListWidgetItem()
-				item.setText(str(line))
-				DecisionList.addItem(item)
-	
-	dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
-	if len(dsd_files) != 1:
-	    warnings.warn("There has to be exactly one dsd-file")
-	DSDFile = open (filePath + "/" + dsd_files[0], "r")
-	for line in DSDFile:
-            item = QtWidgets.QListWidgetItem()
-            DSDList.addItem(item)
-            if line != "__init__.py":
-                line = str(line)
-                item.setText(line)
+            returners = 0
+            if f != "__init__.py":
+                    f = open(DecisionFilePath + "/" + f, 'r')
+                    for line in f:
+                        if "def _register():" in line:
+                                  returners = 1
+                        elif returners == 1 and "def _register():" not in line:
+                                if "[" in line:
+                                    line = line.split("[")[1]
+                                    lineItems = []
+                                    lineItems.extend(line.split(","))
+                                    for items in lineItems:
+                                        if items.strip():
+                                            lineItem = str(items.split(" ")[-1])
+                                            lineItem = str(items.split("'")[1])
+                                            item = QtWidgets.QListWidgetItem()
+                                            DecisionList.addItem(item)
+                                            item.setText(lineItem)
+                                            DecisionList.addItem(item)
+                                if "]" in line:
+                                    returners = 0
+                                elif line.startswith("class"):
+                                     line = line.split(" ")[1]
+                                     line = line.split("(")[0]
+                                     item = QtWidgets.QListWidgetItem()
+                                     item.setText(str(line))
+                                     DecisionList.addItem(item)
+
+        dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
+        if len(dsd_files) != 1:
+            warnings.warn("There has to be exactly one dsd-file")
+        DSDFile = open (filePath + "/" + dsd_files[0], "r")
+        for line in DSDFile:
+                item = QtWidgets.QListWidgetItem()
                 DSDList.addItem(item)
+                if line != "__init__.py":
+                    line = str(line)
+                    item.setText(line)
+                    DSDList.addItem(item)
+    def SingleDelete(self):
+            DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+            listItems = self.DSDList.selectedItems()
+            if not listItems: return
+            for item in listItems:
+                self.DSDList.takeItem(self.DSDList.row(item))
+
 
     def SaveButtonClick(self):
         # TODO: Change FileName and Path to actual input-windows
+        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
         FileName = "StandardName"
         text, ok = QtWidgets.QInputDialog.getText(self, 'Input Dialog', 'Enter Filename:')
         if ok:
@@ -150,8 +173,9 @@ class Ui(QtWidgets.QDialog):
         # writes a file with a specific name and the structure needed for action-elements.
         completeName = os.path.join(Path, FileName + ".py")
         f = open(completeName, 'w')
-        f.write("This has to be done in the future")
-
+        for i in range(DSDList.count()):
+            string = DSDList.item(i).text()
+            f.write(string)
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

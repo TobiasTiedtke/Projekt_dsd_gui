@@ -7,7 +7,33 @@ import warnings
 class Ui(QtWidgets.QDialog):
     resized = QtCore.pyqtSignal()
     def __init__(self):
-
+        super(Ui, self).__init__()
+        uic.loadUi('DSDGUI.ui', self)
+        ReadButton = self.findChild(QtWidgets.QPushButton, 'ReadButton')
+        ReadButton.clicked.connect(self.SingleBrowse)
+        SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
+        SaveButton.clicked.connect(self.SaveButtonClick)
+        DeleteAllButton = self.findChild(QtWidgets.QPushButton, 'DeleteAllButton')
+        DeleteAllButton.clicked.connect(self.DeleteAll)
+        SingleDeleteButton = self.findChild(QtWidgets.QPushButton, 'SingleDeleteButton')
+        SingleDeleteButton.clicked.connect(self.SingleDelete)
+        SingleDeleteButton.setEnabled(False)
+        EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
+        EditButton.clicked.connect(self.EditButtonClick)
+        EditButton.setEnabled(False)
+        SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
+        SortButton.clicked.connect(self.SortButtonClick)
+        SortButton.setEnabled(False)
+        SaveButton.setEnabled(False)
+        DeleteAllButton.setEnabled(False)
+        self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint |
+            QtCore.Qt.WindowMaximizeButtonHint |
+            QtCore.Qt.CustomizeWindowHint |
+            QtCore.Qt.WindowTitleHint |
+            QtCore.Qt.WindowCloseButtonHint |
+            QtCore.Qt.WindowStaysOnTopHint
+        )
+        self.show()
 
     def SortButtonClick(self):
         DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
@@ -44,33 +70,7 @@ class Ui(QtWidgets.QDialog):
 
         return False
 
-            super(Ui, self).__init__()
-            uic.loadUi('DSDGUI.ui', self)
-            ReadButton = self.findChild(QtWidgets.QPushButton, 'ReadButton')
-            ReadButton.clicked.connect(self.SingleBrowse)
-            SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
-            SaveButton.clicked.connect(self.SaveButtonClick)
-            DeleteAllButton = self.findChild(QtWidgets.QPushButton, 'DeleteAllButton')
-            DeleteAllButton.clicked.connect(self.DeleteAll)
-            SingleDeleteButton = self.findChild(QtWidgets.QPushButton, 'SingleDeleteButton')
-            SingleDeleteButton.clicked.connect(self.SingleDelete)
-            SingleDeleteButton.setEnabled(False)
-            EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
-            EditButton.clicked.connect(self.EditButtonClick)
-            EditButton.setEnabled(False)
-            SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
-            SortButton.clicked.connect(self.SortButtonClick)
-            SortButton.setEnabled(False)
-            SaveButton.setEnabled(False)
-            DeleteAllButton.setEnabled(False)
-            self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint |
-                QtCore.Qt.WindowMaximizeButtonHint |
-                QtCore.Qt.CustomizeWindowHint |
-                QtCore.Qt.WindowTitleHint |
-                QtCore.Qt.WindowCloseButtonHint |
-                QtCore.Qt.WindowStaysOnTopHint
-            )
-            self.show()
+
             
     def DeleteAll(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
@@ -104,7 +104,6 @@ class Ui(QtWidgets.QDialog):
         DeleteAllButton.setEnabled(True)
         SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
         SaveButton.setEnabled(True)
-        SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
         SaveButton.clicked.connect(self.SaveButtonClick)
         EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
         EditButton.setEnabled(True)
@@ -190,11 +189,11 @@ class Ui(QtWidgets.QDialog):
         Path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select a folder:', "-/Desktop/",
                                                           QtWidgets.QFileDialog.ShowDirsOnly)
         # writes a file with a specific name and the structure needed for action-elements.
-        completeName = os.path.join(Path, FileName + ".py")
+        completeName = os.path.join(Path, FileName + ".dsd")
         f = open(completeName, 'w')
         for i in range(DSDList.count()):
             string = DSDList.item(i).text()
-            f.write(string)
+            f.write(string + "\n")
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

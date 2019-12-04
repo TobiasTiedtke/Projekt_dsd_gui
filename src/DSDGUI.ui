@@ -6,9 +6,15 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>629</width>
-    <height>499</height>
+    <width>1192</width>
+    <height>660</height>
    </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
   </property>
   <property name="windowTitle">
    <string>Dialog</string>
@@ -30,22 +36,14 @@
            </property>
            <item>
             <widget class="QLabel" name="DecisionLabel">
-             <property name="text">
-              <string>      Decisions       </string>
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
              </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="DecisionFolderButton">
              <property name="text">
-              <string>Folder</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="DecisionPlusButton">
-             <property name="text">
-              <string>+</string>
+              <string>                                                                                     Decisions       </string>
              </property>
             </widget>
            </item>
@@ -55,6 +53,12 @@
           <layout class="QGridLayout" name="DecisionLayout">
            <item row="0" column="0">
             <widget class="QGroupBox" name="groupBox">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string/>
              </property>
@@ -63,9 +67,15 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>321</width>
-                <height>161</height>
+                <width>771</width>
+                <height>531</height>
                </rect>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
               </property>
               <property name="dragDropMode">
                <enum>QAbstractItemView::DragOnly</enum>
@@ -95,42 +105,31 @@
            </property>
            <item>
             <widget class="QWidget" name="widget" native="true">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <widget class="QLabel" name="ActionLabel">
               <property name="geometry">
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>101</width>
-                <height>47</height>
+                <width>581</width>
+                <height>51</height>
                </rect>
               </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>0</horstretch>
+                <verstretch>0</verstretch>
+               </sizepolicy>
+              </property>
               <property name="text">
-               <string>        Actions</string>
+               <string>                                                                                          Actions</string>
               </property>
              </widget>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="ActionFolderButton">
-             <property name="sizePolicy">
-              <sizepolicy hsizetype="Minimum" vsizetype="Fixed">
-               <horstretch>0</horstretch>
-               <verstretch>0</verstretch>
-              </sizepolicy>
-             </property>
-             <property name="text">
-              <string>Folder</string>
-             </property>
-            </widget>
-           </item>
-           <item>
-            <widget class="QPushButton" name="ActionPlusButton">
-             <property name="mouseTracking">
-              <bool>false</bool>
-             </property>
-             <property name="text">
-              <string>+</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -139,6 +138,12 @@
           <layout class="QGridLayout" name="ActionGrid">
            <item row="0" column="0">
             <widget class="QGroupBox" name="groupBox_2">
+             <property name="sizePolicy">
+              <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+               <horstretch>0</horstretch>
+               <verstretch>0</verstretch>
+              </sizepolicy>
+             </property>
              <property name="title">
               <string/>
              </property>
@@ -147,9 +152,15 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>321</width>
-                <height>161</height>
+                <width>821</width>
+                <height>371</height>
                </rect>
+              </property>
+              <property name="sizePolicy">
+               <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                <horstretch>1</horstretch>
+                <verstretch>1</verstretch>
+               </sizepolicy>
               </property>
               <property name="dragDropMode">
                <enum>QAbstractItemView::DragOnly</enum>
@@ -169,6 +180,12 @@
         <layout class="QVBoxLayout" name="verticalLayout_2">
          <item>
           <widget class="QGroupBox" name="groupBox_3">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="acceptDrops">
             <bool>true</bool>
            </property>
@@ -183,9 +200,15 @@
              <rect>
               <x>0</x>
               <y>0</y>
-              <width>281</width>
-              <height>421</height>
+              <width>1024</width>
+              <height>731</height>
              </rect>
+            </property>
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
             </property>
             <property name="dragDropMode">
              <enum>QAbstractItemView::DropOnly</enum>
@@ -204,6 +227,15 @@
    </item>
    <item>
     <widget class="QFrame" name="frame">
+     <property name="enabled">
+      <bool>true</bool>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Minimum">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimumSize">
       <size>
        <width>50</width>
@@ -244,7 +276,7 @@
       </property>
       <property name="geometry">
        <rect>
-        <x>380</x>
+        <x>290</x>
         <y>0</y>
         <width>91</width>
         <height>27</height>
@@ -269,7 +301,7 @@
      <widget class="QPushButton" name="ReadButton">
       <property name="geometry">
        <rect>
-        <x>260</x>
+        <x>180</x>
         <y>0</y>
         <width>97</width>
         <height>27</height>
@@ -279,9 +311,51 @@
        <string>Read</string>
       </property>
      </widget>
+     <widget class="QPushButton" name="EditButton">
+      <property name="geometry">
+       <rect>
+        <x>620</x>
+        <y>0</y>
+        <width>97</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Edit</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="SortButton">
+      <property name="geometry">
+       <rect>
+        <x>740</x>
+        <y>0</y>
+        <width>97</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Sort</string>
+      </property>
+     </widget>
+     <widget class="QPushButton" name="SingleDeleteButton">
+      <property name="geometry">
+       <rect>
+        <x>400</x>
+        <y>0</y>
+        <width>91</width>
+        <height>27</height>
+       </rect>
+      </property>
+      <property name="text">
+       <string>Delete Selected</string>
+      </property>
+     </widget>
      <zorder>DeleteAllButton</zorder>
      <zorder>SaveButton</zorder>
      <zorder>ReadButton</zorder>
+     <zorder>EditButton</zorder>
+     <zorder>SortButton</zorder>
+     <zorder>SingleDeleteButton</zorder>
     </widget>
    </item>
   </layout>

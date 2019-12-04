@@ -34,7 +34,7 @@ class Ui(QtWidgets.QDialog):
                 QtCore.Qt.WindowStaysOnTopHint
             )
             self.show()
-
+            
     def DeleteAll(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
         DSDList.clear()
@@ -44,6 +44,7 @@ class Ui(QtWidgets.QDialog):
         return super(Ui, self).resizeEvent(event)
 
     def EditButtonClick(self):
+
             DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
             for i in range(DSDList.count()):
                DSDList.closePersistentEditor(DSDList.item(i))

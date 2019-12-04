@@ -1,6 +1,5 @@
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
 import os, sys
-import SaveButton as SaveB
 import warnings
 
 
@@ -17,9 +16,18 @@ class Ui(QtWidgets.QDialog):
         DeleteAllButton = self.findChild(QtWidgets.QPushButton, 'DeleteAllButton')
         DeleteAllButton.clicked.connect(self.DeleteAll)
         EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
-  	EditButton.clicked.connect(self.EditButtonClick)
+        EditButton.clicked.connect(self.EditButtonClick)
+        SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
+        SortButton.clicked.connect(self.SortButtonClick)
+        DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
+        ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+        DSDList.installEventFilter(self)
         SaveButton.setEnabled(False)
         DeleteAllButton.setEnabled(False)
+#TODO: one of the following two
+#        DSDList.itemDoubleClicked(*item)
+#        self.installEventFilter(self)
         self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint |
             QtCore.Qt.WindowMaximizeButtonHint |
             QtCore.Qt.CustomizeWindowHint |
@@ -29,38 +37,55 @@ class Ui(QtWidgets.QDialog):
         )
         self.show()
 
+    def dropEvent(DSDList, e):
+            print("Test")
+
+    def SortButtonClick(self):
+        DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
+        ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+        for item in range(DSDList.count()):
+            for item1 in range(DecisionList.count()):
+                if DSDList.item(item).text() == DecisionList.item(item1).text():
+                    DSDList.item(item).setText("    " + str(DSDList.item(item).text()))
+            for item1 in range(ActionList.count()): 
+                if DSDList.item(item).text() == ActionList.item(item1).text():
+                    DSDList.item(item).setText("        YES/NO --> " + str(DSDList.item(item).text()))
+        
+#eventFilter is used to check if a special event occurs and should then do something with that event
+#    def eventFilter(self, object, event):
+#        if (object is self.DSDList):
+#        if (event.type() == QtCore.QEvent.Drop):
+#	        print("WORK! GODDAMIT!")
+ #       if (event.type() == QtCore.QEvent.MouseButtonDblClick):
+  #        	#for i in range(DSDList.count()):
+   #          #   DSDList.closePersistentEditor(DSDList.item(i))
+    #        sel_items = DSDList.selectedItems()
+     #       for item in sel_items:
+      #          DSDList.openPersistentEditor(item)
+       # return False # lets the event continue to the edit
+#        return False
+
+#TODO: Maybe??
+    def eventFilter(self, object, event):
+        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+        if event.type() == QtCore.QEvent.MouseButtonPress and object is self.DSDList:
+            warnings.warn("Gedidded!")
+            return True
+
+        return False
+
     def DeleteAll(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
         DSDList.clear()
 
-    def resizeEvent(self, event):
-        self.resized.emit()
-        return super(Ui, self).resizeEvent(event)
-
     def EditButtonClick(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
       	for i in range(DSDList.count()):
-           DSDList.closePersistentEditor(DSDList.item(i))
-	   sel_items = DSDList.selectedItems()
-	   for item in sel_items:
-	       DSDList.openPersistentEditor(item)
-#	text, okPressed = QtWidgets.QInputDialog.getText(self, "Add to the list item","Your Change:", QtWidgets.QLineEdit.Normal, ""), QtWidgets.QInputDialog.setText(str(sel_items))
-#        if okPressed and text != '':
-#	    for item in sel_items:
-#	        item.setText(item.text() + text)
-      
-    # Function to enable drag of text
-    def dragEnterEvent(self, e):
-
-        if e.mimeData().hasFormat('text/plain'):
-            e.accept()
-        else:
-            e.ignore()
-
-    # Function to drop text
-    def dropEvent(self, e):
-
-        self.setText(e.mimeData().text())
+            DSDList.closePersistentEditor(DSDList.item(i))
+	    sel_items = DSDList.selectedItems()
+	    for item in sel_items:
+	        DSDList.openPersistentEditor(item)
 
     def SingleBrowse(self):
         # browsing for a folder and changing it to a string
@@ -80,6 +105,7 @@ class Ui(QtWidgets.QDialog):
         DeleteAllButton.setEnabled(True)
         SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
         SaveButton.setEnabled(True)
+        self.DSDList.installEventFilter(self)
 
         # Extracting the classes in the files in the actions-Folder from the selected path and adding it to the ActionList
         onlyfiles = [f for f in os.listdir(ActionFilePath) if os.path.isfile(os.path.join(ActionFilePath, f))]
@@ -127,15 +153,15 @@ class Ui(QtWidgets.QDialog):
 				item.setText(str(line))
 				DecisionList.addItem(item)
 	
-	dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
-	if len(dsd_files) != 1:
-	    warnings.warn("There has to be exactly one dsd-file")
-	DSDFile = open (filePath + "/" + dsd_files[0], "r")
-	for line in DSDFile:
+        dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
+        if len(dsd_files) != 1:
+            warnings.warn("There has to be exactly one dsd-file")
+        DSDFile = open (filePath + "/" + dsd_files[0], "r")
+        for line in DSDFile:
             item = QtWidgets.QListWidgetItem()
             DSDList.addItem(item)
             if line != "__init__.py":
-                line = str(line)
+                line = str(line.split("\n")[0])
                 item.setText(line)
                 DSDList.addItem(item)
 

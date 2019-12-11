@@ -70,8 +70,8 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>771</width>
-                <height>531</height>
+                <width>581</width>
+                <height>231</height>
                </rect>
               </property>
               <property name="sizePolicy">
@@ -155,7 +155,7 @@
                <rect>
                 <x>0</x>
                 <y>0</y>
-                <width>821</width>
+                <width>581</width>
                 <height>371</height>
                </rect>
               </property>
@@ -213,8 +213,17 @@
               <verstretch>0</verstretch>
              </sizepolicy>
             </property>
+            <property name="dragDropOverwriteMode">
+             <bool>true</bool>
+            </property>
             <property name="dragDropMode">
              <enum>QAbstractItemView::DropOnly</enum>
+            </property>
+            <property name="selectionMode">
+             <enum>QAbstractItemView::ExtendedSelection</enum>
+            </property>
+            <property name="textElideMode">
+             <enum>Qt::ElideLeft</enum>
             </property>
             <property name="uniformItemSizes">
              <bool>true</bool>

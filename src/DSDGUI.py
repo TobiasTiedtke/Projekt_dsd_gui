@@ -1,5 +1,7 @@
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
 import os, sys
+import qtmodern.styles
+import qtmodern.windows
 import SaveButton as SaveB
 import warnings
 
@@ -19,6 +21,10 @@ class Ui(QtWidgets.QDialog):
             SingleDeleteButton = self.findChild(QtWidgets.QPushButton, 'SingleDeleteButton')
             SingleDeleteButton.clicked.connect(self.SingleDelete)
             SingleDeleteButton.setEnabled(False)
+            DecisionEdit = self.findChild(QtWidgets.QPushButton, 'DecisionEdit')
+            DecisionEdit.clicked.connect(self.DecisionPlus)
+            ActionEdit = self.findChild(QtWidgets.QPushButton, 'ActionEdit')
+            ActionEdit.clicked.connect(self.ActionEditClick)
             EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
             EditButton.clicked.connect(self.EditButtonClick)
             EditButton.setEnabled(False)
@@ -26,6 +32,8 @@ class Ui(QtWidgets.QDialog):
             SortButton.setEnabled(False)
             SaveButton.setEnabled(False)
             DeleteAllButton.setEnabled(False)
+
+   #         self.setStyleSheet("background-image: url(C:/Users/Tobias/Pictures/Tree.png)")
             self.setWindowFlags(QtCore.Qt.WindowMinimizeButtonHint |
                 QtCore.Qt.WindowMaximizeButtonHint |
                 QtCore.Qt.CustomizeWindowHint |
@@ -34,7 +42,12 @@ class Ui(QtWidgets.QDialog):
                 QtCore.Qt.WindowStaysOnTopHint
             )
             self.show()
-            
+    def DecisionPlus(self):
+        DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
+        item2 = QtWidgets.QListWidgetItem()
+        DecisionList.addItem(item2)
+        DecisionList.openPersistentEditor(item2)
+
     def DeleteAll(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
         DSDList.clear()
@@ -43,8 +56,23 @@ class Ui(QtWidgets.QDialog):
         self.resized.emit()
         return super(Ui, self).resizeEvent(event)
 
-    def EditButtonClick(self):
+    def DecisionEditClick(self):
+            DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
+            for i in range(DecisionList.count()):
+               DecisionList.closePersistentEditor(DecisionList.item(i))
+            sel_items = DecisionList.selectedItems()
+            for item in sel_items:
+               DecisionList.openPersistentEditor(item)
 
+    def ActionEditClick(self):
+            ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+            for i in range(ActionList.count()):
+               ActionList.closePersistentEditor(ActionList.item(i))
+            sel_items = ActionList.selectedItems()
+            for item in sel_items:
+               ActionList.openPersistentEditor(item)
+
+    def EditButtonClick(self):
             DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
             for i in range(DSDList.count()):
                DSDList.closePersistentEditor(DSDList.item(i))
@@ -95,6 +123,9 @@ class Ui(QtWidgets.QDialog):
         EditButton.setEnabled(True)
         SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
         SortButton.setEnabled(True)
+
+
+
 
         # Extracting the classes in the files in the actions-Folder from the selected path and adding it to the ActionList
         onlyfiles = [f for f in os.listdir(ActionFilePath) if os.path.isfile(os.path.join(ActionFilePath, f))]
@@ -154,12 +185,33 @@ class Ui(QtWidgets.QDialog):
                     item.setText(line)
                     DSDList.addItem(item)
     def SingleDelete(self):
+            ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+            DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
             DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
             listItems = self.DSDList.selectedItems()
-            if not listItems: return
-            for item in listItems:
+            listItems2 = self.ActionList.selectedItems()
+            listItems3 = self.DecisionList.selectedItems()
+            if listItems:
+               for item in listItems:
                 self.DSDList.takeItem(self.DSDList.row(item))
+            if listItems2:
+               for item in listItems2:
+                self.ActionList.takeItem(self.ActionList.row(item))
+            if listItems3:
+             for item in listItems3:
+                self.DecisionList.takeItem(self.DecisionList.row(item))
+            DSDList.clearSelection()
+            ActionList.clearSelection()
+            DecisionList.clearSelection()
 
+
+    def clearSelection(self):
+        ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+        DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
+        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+        DSDList.clearSelection()
+        ActionList.clearSelection()
+        DecisionList.clearSelection()
 
     def SaveButtonClick(self):
         # TODO: Change FileName and Path to actual input-windows
@@ -179,5 +231,8 @@ class Ui(QtWidgets.QDialog):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
+    qtmodern.styles.dark(app)
     window = Ui()
+    mw = qtmodern.windows.ModernWindow(window)
+    mw.show()
     sys.exit(app.exec_())

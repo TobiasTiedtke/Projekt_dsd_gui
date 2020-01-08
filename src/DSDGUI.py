@@ -8,10 +8,23 @@ class DropList(QtWidgets.QListWidget):
         super(DropList, self).__init__(parent)
         self.Ui = Ui
         self.setAcceptDrops(True)
+        self.setDragEnabled(True)
+
+    def dragEnterEvent(self, f):
+        super(DropList, self).dragEnterEvent(f)
+        print (f)
+        self.DraggedItem = f.mimeData().text()
 
     def dropEvent(self, e):
         super(DropList, self).dropEvent(e)
-        warnings.warn("TEST")
+        s = e.mimeData()
+        t = s.text()
+        print(self.DraggedItem)
+        if str(e.mimeData().text()).startswith("$"):
+            warnings.warn("Test")
+#            for line in str(ActionList):
+#                if line == str(e.text):
+
 
 # Loading UI
 class Ui(QtWidgets.QDialog):
@@ -19,11 +32,16 @@ class Ui(QtWidgets.QDialog):
     def __init__(self):
         super(Ui, self).__init__()
         uic.loadUi('DSDGUI.ui', self)
+        self.DraggedItem = ""
         self.DSDGroup = self.findChild(QtWidgets.QGroupBox, 'groupBox_3')
-#        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
         self.DSDList = DropList(self.DSDGroup, Ui)
         self.DSDList.setMinimumWidth(581)
         self.DSDList.setMinimumHeight(1024)
+        self.ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+        self.DecisionGroup = self.findChild(QtWidgets.QGroupBox, 'groupBox')
+        self.DecisionList = DropList(self.DecisionGroup, Ui)
+        self.DecisionList.setMinimumWidth(581)
+        self.DecisionList.setMinimumHeight(512)
         self.ReadButton = self.findChild(QtWidgets.QPushButton, 'ReadButton')
         self.ReadButton.clicked.connect(self.SingleBrowse)
         self.SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
@@ -36,8 +54,6 @@ class Ui(QtWidgets.QDialog):
         self.EditButton.clicked.connect(self.EditButtonClick)
         self.SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
         self.SortButton.clicked.connect(self.SortButtonClick)
-        self.ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
-        self.DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
         self.EditButton.setEnabled(False)
         self.SingleDeleteButton.setEnabled(False)
         self.SortButton.setEnabled(False)
@@ -63,9 +79,6 @@ class Ui(QtWidgets.QDialog):
             for item1 in range(ActionList.count()):
                 if DSDList.item(item).text() == ActionList.item(item1).text():
                     DSDList.item(item).setText("        YES/NO --> @" + str(DSDList.item(item).text()))
-
-    def dropEvent(self, event):
-        print('Works?')
 
     def DeleteAll(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
@@ -139,7 +152,7 @@ class Ui(QtWidgets.QDialog):
                         line = line.split(" ")[1]
                         line = line.split("(")[0]
                         item = QtWidgets.QListWidgetItem()
-                        item.setText(str(line))
+                        item.setText("$" + str(line))
                         self.DecisionList.addItem(item)
         dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
         if len(dsd_files) != 1:
@@ -153,10 +166,6 @@ class Ui(QtWidgets.QDialog):
                 item.setText(line)
                 self.DSDList.addItem(item)
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
-
-    def dropEvent(self, e):
-        super(self).dropEvent(e)
-        warnings.warn("Finally!")
 
     def SingleDelete(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')

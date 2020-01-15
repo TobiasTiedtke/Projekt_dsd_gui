@@ -1,5 +1,9 @@
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
 import os, sys
+import qtmodern.styles
+import qtmodern.windows
+import SaveButton as SaveB
+
 import warnings
 
 
@@ -79,15 +83,41 @@ class Ui(QtWidgets.QDialog):
             for item1 in range(ActionList.count()):
                 if DSDList.item(item).text() == ActionList.item(item1).text():
                     DSDList.item(item).setText("        YES/NO --> @" + str(DSDList.item(item).text()))
-
+                    
+    def DecisionPlus(self):
+        DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
+        item2 = QtWidgets.QListWidgetItem()
+        DecisionList.addItem(item2)
+        DecisionList.openPersistentEditor(item2)
+        
     def DeleteAll(self):
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
         DSDList.clear()
 
+    def resizeEvent(self, event):
+        self.resized.emit()
+        return super(Ui, self).resizeEvent(event)
+
+    def DecisionEditClick(self):
+            DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
+            for i in range(DecisionList.count()):
+               DecisionList.closePersistentEditor(DecisionList.item(i))
+            sel_items = DecisionList.selectedItems()
+            for item in sel_items:
+               DecisionList.openPersistentEditor(item)
+
+    def ActionEditClick(self):
+            ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+            for i in range(ActionList.count()):
+               ActionList.closePersistentEditor(ActionList.item(i))
+            sel_items = ActionList.selectedItems()
+            for item in sel_items:
+               ActionList.openPersistentEditor(item)
+
     def EditButtonClick(self):
-        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
-        for i in range(DSDList.count()):
-            DSDList.closePersistentEditor(DSDList.item(i))
+            DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+            for i in range(DSDList.count()):
+               DSDList.closePersistentEditor(DSDList.item(i))
             sel_items = DSDList.selectedItems()
             for item in sel_items:
                 DSDList.openPersistentEditor(item)
@@ -168,11 +198,32 @@ class Ui(QtWidgets.QDialog):
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
 
     def SingleDelete(self):
+            ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+            DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
+            DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+            listItems = self.DSDList.selectedItems()
+            listItems2 = self.ActionList.selectedItems()
+            listItems3 = self.DecisionList.selectedItems()
+            if listItems:
+               for item in listItems:
+                self.DSDList.takeItem(self.DSDList.row(item))
+            if listItems2:
+               for item in listItems2:
+                self.ActionList.takeItem(self.ActionList.row(item))
+            if listItems3:
+             for item in listItems3:
+                self.DecisionList.takeItem(self.DecisionList.row(item))
+            DSDList.clearSelection()
+            ActionList.clearSelection()
+            DecisionList.clearSelection()
+            
+    def clearSelection(self):
+        ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+        DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
         DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
-        listItems = self.DSDList.selectedItems()
-        if not listItems: return
-        for item in listItems:
-            self.DSDList.takeItem(self.DSDList.row(item))
+        DSDList.clearSelection()
+        ActionList.clearSelection()
+        DecisionList.clearSelection()
 
     def SaveButtonClick(self):
         # Saves the DSD-text to a new file
@@ -193,5 +244,8 @@ class Ui(QtWidgets.QDialog):
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
+    qtmodern.styles.dark(app)
     window = Ui()
+    mw = qtmodern.windows.ModernWindow(window)
+    mw.show()
     sys.exit(app.exec_())

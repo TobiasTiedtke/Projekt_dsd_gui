@@ -1,11 +1,11 @@
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
 import os, sys
-import qtmodern.styles
-import qtmodern.windows
-import SaveButton as SaveB
-
+#import qtmodern.styles
+#import qtmodern.windows
+#import SaveButton as SaveB
 import warnings
 
+dragItem = None
 
 class DropList(QtWidgets.QListWidget):
     def __init__(self, parent, Ui):
@@ -14,20 +14,14 @@ class DropList(QtWidgets.QListWidget):
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
 
-    def dragEnterEvent(self, f):
-        super(DropList, self).dragEnterEvent(f)
-        print (f)
-        self.DraggedItem = f.mimeData().text()
-
+    def startDrag(self, supportedActions):
+        global dragItem
+        dragItem = self.currentItem()
+        super(DropList, self).startDrag(supportedActions)
+#ToDo: Mit DropEvent die Verarbeitung auf der rechten Seite anstoßen, SortButton löschen
     def dropEvent(self, e):
         super(DropList, self).dropEvent(e)
-        s = e.mimeData()
-        t = s.text()
-        print(self.DraggedItem)
-        if str(e.mimeData().text()).startswith("$"):
-            warnings.warn("Test")
-#            for line in str(ActionList):
-#                if line == str(e.text):
+        print (dragItem.text())
 
 
 # Loading UI
@@ -45,7 +39,7 @@ class Ui(QtWidgets.QDialog):
         self.DecisionGroup = self.findChild(QtWidgets.QGroupBox, 'groupBox')
         self.DecisionList = DropList(self.DecisionGroup, Ui)
         self.DecisionList.setMinimumWidth(581)
-        self.DecisionList.setMinimumHeight(512)
+        self.DecisionList.setMinimumHeight(480)
         self.ReadButton = self.findChild(QtWidgets.QPushButton, 'ReadButton')
         self.ReadButton.clicked.connect(self.SingleBrowse)
         self.SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
@@ -58,6 +52,10 @@ class Ui(QtWidgets.QDialog):
         self.EditButton.clicked.connect(self.EditButtonClick)
         self.SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
         self.SortButton.clicked.connect(self.SortButtonClick)
+        self.DecisionList.setDragEnabled(True)
+        self.DecisionList.setAcceptDrops(False)
+        self.DSDList.setDragEnabled(False)
+        self.DSDList.setAcceptDrops(True)
         self.EditButton.setEnabled(False)
         self.SingleDeleteButton.setEnabled(False)
         self.SortButton.setEnabled(False)
@@ -73,16 +71,8 @@ class Ui(QtWidgets.QDialog):
         self.show()
 
     def SortButtonClick(self):
-        DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
-        ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
-        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
-        for item in range(DSDList.count()):
-            for item1 in range(DecisionList.count()):
-                if DSDList.item(item).text() == DecisionList.item(item1).text():
-                    DSDList.item(item).setText("    " + str(DSDList.item(item).text()))
-            for item1 in range(ActionList.count()):
-                if DSDList.item(item).text() == ActionList.item(item1).text():
-                    DSDList.item(item).setText("        YES/NO --> @" + str(DSDList.item(item).text()))
+        for i in range(self.DSDList.count()):
+            print("T")
                     
     def DecisionPlus(self):
         DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
@@ -152,7 +142,7 @@ class Ui(QtWidgets.QDialog):
                         line = line.split("(")[0]
                         item = QtWidgets.QListWidgetItem()
                         self.ActionList.addItem(item)
-                        item.setText("        YES/NO --> @" + str(line))
+                        item.setText("~        YES/NO --> @" + str(line))
                         self.ActionList.addItem(item)
         # Extracting the classes in the files in the decisions-Folder from the selected path and adding it to the DecisionList
         onlyfiles = [f for f in os.listdir(DecisionFilePath) if os.path.isfile(os.path.join(DecisionFilePath, f))]
@@ -182,7 +172,7 @@ class Ui(QtWidgets.QDialog):
                         line = line.split(" ")[1]
                         line = line.split("(")[0]
                         item = QtWidgets.QListWidgetItem()
-                        item.setText("$" + str(line))
+                        item.setText("-$" + str(line))
                         self.DecisionList.addItem(item)
         dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
         if len(dsd_files) != 1:
@@ -237,15 +227,15 @@ class Ui(QtWidgets.QDialog):
         # writes a file with a specific name and the structure needed for action-elements.
         completeName = os.path.join(Path, FileName + ".dsd")
         f = open(completeName, 'w')
-        for i in range(DSDList.count()):
-            string = DSDList.item(i).text()
+        for i in range(self.DSDList.count()):
+            string = self.DSDList.item(i).text()
             f.write(string + "\n")
 
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)
-    qtmodern.styles.dark(app)
+#    qtmodern.styles.dark(app)
     window = Ui()
-    mw = qtmodern.windows.ModernWindow(window)
-    mw.show()
+#    mw = qtmodern.windows.ModernWindow(window)
+#    mw.show()
     sys.exit(app.exec_())

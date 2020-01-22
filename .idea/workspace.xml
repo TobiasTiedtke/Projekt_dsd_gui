@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="021e7aa6-1dcc-4199-b2ff-c8e990b20ef3" name="Default Changelist" comment="Added possibility to overwrite DropEvent">
+    <list default="true" id="021e7aa6-1dcc-4199-b2ff-c8e990b20ef3" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DSDGUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DSDGUI.py" afterDir="false" />
     </list>
@@ -113,7 +113,14 @@
       <option name="project" value="LOCAL" />
       <updated>1576687413955</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Added possibility to overwrite DropEvent">
+      <created>1579701667211</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1579701667211</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -125,46 +132,46 @@
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
     <state x="841" y="302" key="#xdebugger.evaluate/65.24.1855.1176@65.24.1855.1176" timestamp="1578497121448" />
-    <state x="65" y="24" width="1855" height="1176" key="CommitChangelistDialog2" timestamp="1578493518764">
+    <state x="65" y="24" width="1855" height="1176" key="CommitChangelistDialog2" timestamp="1579701666767">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state x="65" y="24" width="1855" height="1176" key="CommitChangelistDialog2/65.24.1855.1176@65.24.1855.1176" timestamp="1578493518764" />
-    <state x="779" y="357" key="FileChooserDialogImpl" timestamp="1576682235905">
+    <state x="65" y="24" width="1855" height="1176" key="CommitChangelistDialog2/65.24.1855.1176@65.24.1855.1176" timestamp="1579701666767" />
+    <state x="779" y="357" key="FileChooserDialogImpl" timestamp="1579700561008">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state x="779" y="357" key="FileChooserDialogImpl/65.24.1855.1176@65.24.1855.1176" timestamp="1576682235905" />
-    <state width="1832" height="336" key="GridCell.Tab.0.bottom" timestamp="1579108345067">
+    <state x="779" y="357" key="FileChooserDialogImpl/65.24.1855.1176@65.24.1855.1176" timestamp="1579700561008" />
+    <state width="1832" height="493" key="GridCell.Tab.0.bottom" timestamp="1579711565207">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="336" key="GridCell.Tab.0.bottom/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345067" />
-    <state width="1832" height="336" key="GridCell.Tab.0.center" timestamp="1579108345066">
+    <state width="1832" height="493" key="GridCell.Tab.0.bottom/65.24.1855.1176@65.24.1855.1176" timestamp="1579711565207" />
+    <state width="1832" height="493" key="GridCell.Tab.0.center" timestamp="1579711565207">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="336" key="GridCell.Tab.0.center/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345066" />
-    <state width="1832" height="336" key="GridCell.Tab.0.left" timestamp="1579108345066">
+    <state width="1832" height="493" key="GridCell.Tab.0.center/65.24.1855.1176@65.24.1855.1176" timestamp="1579711565207" />
+    <state width="1832" height="493" key="GridCell.Tab.0.left" timestamp="1579711565207">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="336" key="GridCell.Tab.0.left/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345066" />
-    <state width="1832" height="336" key="GridCell.Tab.0.right" timestamp="1579108345067">
+    <state width="1832" height="493" key="GridCell.Tab.0.left/65.24.1855.1176@65.24.1855.1176" timestamp="1579711565207" />
+    <state width="1832" height="493" key="GridCell.Tab.0.right" timestamp="1579711565207">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="336" key="GridCell.Tab.0.right/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345067" />
-    <state width="1832" height="329" key="GridCell.Tab.1.bottom" timestamp="1579108345064">
+    <state width="1832" height="493" key="GridCell.Tab.0.right/65.24.1855.1176@65.24.1855.1176" timestamp="1579711565207" />
+    <state width="1832" height="493" key="GridCell.Tab.1.bottom" timestamp="1579711565208">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="329" key="GridCell.Tab.1.bottom/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345064" />
-    <state width="1832" height="329" key="GridCell.Tab.1.center" timestamp="1579108345064">
+    <state width="1832" height="493" key="GridCell.Tab.1.bottom/65.24.1855.1176@65.24.1855.1176" timestamp="1579711565208" />
+    <state width="1832" height="493" key="GridCell.Tab.1.center" timestamp="1579711565207">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="329" key="GridCell.Tab.1.center/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345064" />
-    <state width="1832" height="329" key="GridCell.Tab.1.left" timestamp="1579108345064">
+    <state width="1832" height="493" key="GridCell.Tab.1.center/65.24.1855.1176@65.24.1855.1176" timestamp="1579711565207" />
+    <state width="1832" height="493" key="GridCell.Tab.1.left" timestamp="1579711565207">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="329" key="GridCell.Tab.1.left/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345064" />
-    <state width="1832" height="329" key="GridCell.Tab.1.right" timestamp="1579108345064">
+    <state width="1832" height="493" key="GridCell.Tab.1.left/65.24.1855.1176@65.24.1855.1176" timestamp="1579711565207" />
+    <state width="1832" height="493" key="GridCell.Tab.1.right" timestamp="1579711565208">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="329" key="GridCell.Tab.1.right/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345064" />
+    <state width="1832" height="493" key="GridCell.Tab.1.right/65.24.1855.1176@65.24.1855.1176" timestamp="1579711565208" />
     <state x="485" y="234" key="SettingsEditor" timestamp="1579096471434">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
@@ -181,5 +188,21 @@
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
     <state x="764" y="519" key="com.intellij.openapi.vcs.update.UpdateOrStatusOptionsDialogupdate-v2/65.24.1855.1176@65.24.1855.1176" timestamp="1576677798238" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/DSDGUI.py</url>
+          <line>36</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/DSDGUI.py</url>
+          <line>41</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

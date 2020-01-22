@@ -1,8 +1,7 @@
 from PyQt5 import QtWidgets, uic, QtCore, QtGui
 import os, sys
-#import qtmodern.styles
-#import qtmodern.windows
-#import SaveButton as SaveB
+import qtmodern.styles
+import qtmodern.windows
 import warnings
 
 dragItem = None
@@ -36,6 +35,10 @@ class Ui(QtWidgets.QDialog):
         self.DSDList.setMinimumWidth(581)
         self.DSDList.setMinimumHeight(1024)
         self.ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
+        self.ActionGroup = self.findChild(QtWidgets.QGroupBox, 'groupBox_2')
+        self.ActionList = DropList(self.ActionGroup, Ui)
+        self.ActionList.setMinimumWidth(581)
+        self.ActionList.setMinimumHeight(480)
         self.DecisionGroup = self.findChild(QtWidgets.QGroupBox, 'groupBox')
         self.DecisionList = DropList(self.DecisionGroup, Ui)
         self.DecisionList.setMinimumWidth(581)
@@ -142,7 +145,7 @@ class Ui(QtWidgets.QDialog):
                         line = line.split("(")[0]
                         item = QtWidgets.QListWidgetItem()
                         self.ActionList.addItem(item)
-                        item.setText("~        YES/NO --> @" + str(line))
+                        item.setText("        YES/NO --> @" + str(line))
                         self.ActionList.addItem(item)
         # Extracting the classes in the files in the decisions-Folder from the selected path and adding it to the DecisionList
         onlyfiles = [f for f in os.listdir(DecisionFilePath) if os.path.isfile(os.path.join(DecisionFilePath, f))]
@@ -172,7 +175,7 @@ class Ui(QtWidgets.QDialog):
                         line = line.split(" ")[1]
                         line = line.split("(")[0]
                         item = QtWidgets.QListWidgetItem()
-                        item.setText("-$" + str(line))
+                        item.setText("$" + str(line))
                         self.DecisionList.addItem(item)
         dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
         if len(dsd_files) != 1:

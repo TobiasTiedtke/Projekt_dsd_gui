@@ -4,6 +4,7 @@
     <list default="true" id="021e7aa6-1dcc-4199-b2ff-c8e990b20ef3" name="Default Changelist" comment="Added possibility to overwrite DropEvent">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DSDGUI.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/DSDGUI.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DSDGUI.ui" beforeDir="false" afterPath="$PROJECT_DIR$/src/DSDGUI.ui" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -129,26 +130,26 @@
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
     <state x="65" y="24" width="1855" height="1176" key="CommitChangelistDialog2/65.24.1855.1176@65.24.1855.1176" timestamp="1578493518764" />
-    <state x="779" y="357" key="FileChooserDialogImpl" timestamp="1576682235905">
+    <state x="779" y="357" key="FileChooserDialogImpl" timestamp="1579700561008">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state x="779" y="357" key="FileChooserDialogImpl/65.24.1855.1176@65.24.1855.1176" timestamp="1576682235905" />
-    <state width="1832" height="336" key="GridCell.Tab.0.bottom" timestamp="1579108345067">
+    <state x="779" y="357" key="FileChooserDialogImpl/65.24.1855.1176@65.24.1855.1176" timestamp="1579700561008" />
+    <state width="1832" height="336" key="GridCell.Tab.0.bottom" timestamp="1579701594560">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="336" key="GridCell.Tab.0.bottom/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345067" />
-    <state width="1832" height="336" key="GridCell.Tab.0.center" timestamp="1579108345066">
+    <state width="1832" height="336" key="GridCell.Tab.0.bottom/65.24.1855.1176@65.24.1855.1176" timestamp="1579701594560" />
+    <state width="1832" height="336" key="GridCell.Tab.0.center" timestamp="1579701594559">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="336" key="GridCell.Tab.0.center/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345066" />
-    <state width="1832" height="336" key="GridCell.Tab.0.left" timestamp="1579108345066">
+    <state width="1832" height="336" key="GridCell.Tab.0.center/65.24.1855.1176@65.24.1855.1176" timestamp="1579701594559" />
+    <state width="1832" height="336" key="GridCell.Tab.0.left" timestamp="1579701594559">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="336" key="GridCell.Tab.0.left/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345066" />
-    <state width="1832" height="336" key="GridCell.Tab.0.right" timestamp="1579108345067">
+    <state width="1832" height="336" key="GridCell.Tab.0.left/65.24.1855.1176@65.24.1855.1176" timestamp="1579701594559" />
+    <state width="1832" height="336" key="GridCell.Tab.0.right" timestamp="1579701594560">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>
-    <state width="1832" height="336" key="GridCell.Tab.0.right/65.24.1855.1176@65.24.1855.1176" timestamp="1579108345067" />
+    <state width="1832" height="336" key="GridCell.Tab.0.right/65.24.1855.1176@65.24.1855.1176" timestamp="1579701594560" />
     <state width="1832" height="329" key="GridCell.Tab.1.bottom" timestamp="1579108345064">
       <screen x="65" y="24" width="1855" height="1176" />
     </state>

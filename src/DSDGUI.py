@@ -8,6 +8,7 @@ import warnings
 dragItem = None
 
 class DropList(QtWidgets.QListWidget):
+
     def __init__(self, parent, Ui):
         super(DropList, self).__init__(parent)
         self.Ui = Ui
@@ -26,6 +27,8 @@ class DropList(QtWidgets.QListWidget):
 
 # Loading UI
 class Ui(QtWidgets.QDialog):
+    EditableActionList = []
+    EditableDecisionList = []
     resized = QtCore.pyqtSignal()
     def __init__(self):
         super(Ui, self).__init__()
@@ -42,14 +45,25 @@ class Ui(QtWidgets.QDialog):
         self.DecisionList.setMinimumHeight(480)
         self.ReadButton = self.findChild(QtWidgets.QPushButton, 'ReadButton')
         self.ReadButton.clicked.connect(self.SingleBrowse)
+
         self.SaveButton = self.findChild(QtWidgets.QPushButton, 'SaveButton')
         self.SaveButton.clicked.connect(self.SaveButtonClick)
+
         self.DeleteAllButton = self.findChild(QtWidgets.QPushButton, 'DeleteAllButton')
         self.DeleteAllButton.clicked.connect(self.DeleteAll)
+
         self.SingleDeleteButton = self.findChild(QtWidgets.QPushButton, 'SingleDeleteButton')
         self.SingleDeleteButton.clicked.connect(self.SingleDelete)
+
         self.EditButton = self.findChild(QtWidgets.QPushButton, 'EditButton')
         self.EditButton.clicked.connect(self.EditButtonClick)
+
+        self.ActionEdit = self.findChild(QtWidgets.QPushButton, 'ActionEdit')
+        self.ActionEdit.clicked.connect(self.ActionEditClick)
+
+        self.DecisionEdit = self.findChild(QtWidgets.QPushButton, 'DecisionEdit')
+        self.DecisionEdit.clicked.connect(self.DecisionEditClick)
+
         self.SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
         self.SortButton.clicked.connect(self.SortButtonClick)
         self.DecisionList.setDragEnabled(True)
@@ -71,6 +85,14 @@ class Ui(QtWidgets.QDialog):
         self.show()
 
     def SortButtonClick(self):
+
+        for item in range(self.DSDList.count()):
+            for item1 in range(self.DecisionList.count()):
+                if self.DSDList.item(item).text() == self.DecisionList.item(item1).text():
+                    self.DSDList.item(item).setText("    " + str(self.DSDList.item(item).text()))
+            for item1 in range(self.ActionList.count()):
+                if self.DSDList.item(item).text() == self.ActionList.item(item1).text():
+                    self.DSDList.item(item).setText("        YES/NO --> @" + str(self.DSDList.item(item).text()))
         for i in range(self.DSDList.count()):
             print("T")
                     
@@ -81,36 +103,38 @@ class Ui(QtWidgets.QDialog):
         DecisionList.openPersistentEditor(item2)
         
     def DeleteAll(self):
-        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
-        DSDList.clear()
+
+        self.DSDList.clear()
 
     def resizeEvent(self, event):
         self.resized.emit()
         return super(Ui, self).resizeEvent(event)
 
     def DecisionEditClick(self):
-            DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
-            for i in range(DecisionList.count()):
-               DecisionList.closePersistentEditor(DecisionList.item(i))
-            sel_items = DecisionList.selectedItems()
-            for item in sel_items:
-               DecisionList.openPersistentEditor(item)
 
+            for i in range(self.DecisionList.count()):
+               self.DecisionList.closePersistentEditor(self.DecisionList.item(i))
+            sel_items = self.DecisionList.selectedItems()
+            for item in sel_items:
+               self.DecisionList.openPersistentEditor(item)
+
+                
     def ActionEditClick(self):
-            ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
-            for i in range(ActionList.count()):
-               ActionList.closePersistentEditor(ActionList.item(i))
-            sel_items = ActionList.selectedItems()
+      
+            for i in range(self.ActionList.count()):
+               self.ActionList.closePersistentEditor(self.ActionList.item(i))
+            sel_items = self.ActionList.selectedItems()
             for item in sel_items:
-               ActionList.openPersistentEditor(item)
+               self.ActionList.openPersistentEditor(item)
 
+                
     def EditButtonClick(self):
-            DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
-            for i in range(DSDList.count()):
-               DSDList.closePersistentEditor(DSDList.item(i))
-            sel_items = DSDList.selectedItems()
+      
+            for i in range(self.DSDList.count()):
+               self.DSDList.closePersistentEditor(self.DSDList.item(i))
+            sel_items = self.DSDList.selectedItems()
             for item in sel_items:
-                DSDList.openPersistentEditor(item)
+                self.DSDList.openPersistentEditor(item)
 
     def SingleBrowse(self):
         # browsing for a folder and changing it to a string
@@ -187,10 +211,21 @@ class Ui(QtWidgets.QDialog):
                 self.DSDList.addItem(item)
                 item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
 
+        for item in range (self.DecisionList.count()) :
+            #print(self.DecisionList.item(item).text())
+            self.EditableDecisionList.append(self.DecisionList.item(item).text())
+
+        print(len(self.EditableDecisionList))
+        for item in range(self.ActionList.count()):
+            #print(self.ActionList.item(item).text())
+            self.EditableActionList.append(self.ActionList.item(item).text())
+
+        #print(len(self.EditableActionList))
+
+
+
     def SingleDelete(self):
-            ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
-            DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
-            DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
+
             listItems = self.DSDList.selectedItems()
             listItems2 = self.ActionList.selectedItems()
             listItems3 = self.DecisionList.selectedItems()
@@ -203,21 +238,18 @@ class Ui(QtWidgets.QDialog):
             if listItems3:
              for item in listItems3:
                 self.DecisionList.takeItem(self.DecisionList.row(item))
-            DSDList.clearSelection()
-            ActionList.clearSelection()
-            DecisionList.clearSelection()
+            self.DSDList.clearSelection()
+            self.ActionList.clearSelection()
+            self.DecisionList.clearSelection()
             
     def clearSelection(self):
-        ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
-        DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
-        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
-        DSDList.clearSelection()
-        ActionList.clearSelection()
-        DecisionList.clearSelection()
+
+        self.DSDList.clearSelection()
+        self.ActionList.clearSelection()
+        self.DecisionList.clearSelection()
 
     def SaveButtonClick(self):
         # Saves the DSD-text to a new file
-        DSDList = self.findChild(QtWidgets.QListWidget, 'DSDList')
         FileName = "StandardName"
         text, ok = QtWidgets.QInputDialog.getText(self, 'Input Dialog', 'Enter Filename:')
         if ok:
@@ -226,6 +258,35 @@ class Ui(QtWidgets.QDialog):
                                                           QtWidgets.QFileDialog.ShowDirsOnly)
         # writes a file with a specific name and the structure needed for action-elements.
         completeName = os.path.join(Path, FileName + ".dsd")
+        n = self.EditableActionList.count()
+        f = open(completeName, 'a')
+        for i in range(self.DSDList.count()):
+            string = self.DSDList.item(i).text()
+            f.write(string + "\n" + n)
+        f.close()
+
+
+        for i in range(self.ActionList.count()):
+            if not self.ActionList.item(i).text() in self.EditableActionList:
+                path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select a folder:', "-/Desktop/",
+                                                                  QtWidgets.QFileDialog.ShowDirsOnly)
+                fileName = str(self.ActionList.item(i).text())
+                y = str(self.ActionList.item(i).text())
+                completeName = os.path.join(path, fileName + ".py")
+                a = open(completeName, 'a')
+                a.write("from dynamic_stack_decider.abstract_action_element import AbstractActionElement\n")
+                a.write("\n")
+                a.write("class " + str(y) + "(AbstractActionElement):\n")
+                a.write("    def __init__(self, blackboard, dsd, parameters=None):\n")
+                a.write("        super(" + y + ", self).__init__(blackboard, dsd, parameters)\n")
+                a.write("\n")
+                a.write("#TODO: write your own code here.\n")
+                a.write("\n")
+                a.write("    def perform(self, reevaluate=False):\n")
+                a.write("\n")
+                a.write("#TODO: write your own code here.\n")
+                a.write("\n")
+                a.close()
         f = open(completeName, 'w')
         for i in range(self.DSDList.count()):
             string = self.DSDList.item(i).text()

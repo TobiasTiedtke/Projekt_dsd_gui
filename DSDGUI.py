@@ -63,6 +63,9 @@ class Ui(QtWidgets.QDialog):
 
         self.DecisionEdit = self.findChild(QtWidgets.QPushButton, 'DecisionEdit')
         self.DecisionEdit.clicked.connect(self.DecisionEditClick)
+        self.DecisionList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection )
+        self.ActionList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.DSDList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
         self.SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
         self.SortButton.clicked.connect(self.SortButtonClick)
@@ -155,6 +158,7 @@ class Ui(QtWidgets.QDialog):
         ActionFilePath = filePath + "/actions/"
         DecisionFilePath = filePath + "/decisions/"
         self.ActionList.setDragEnabled(True)
+        self.DecisionList
         self.DecisionList.setDragEnabled(True)
         self.SingleDeleteButton.setEnabled(True)
         self.DeleteAllButton.setEnabled(True)

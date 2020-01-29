@@ -7,7 +7,7 @@ import warnings
 dragItem = None
 
 
-class DropList(QtWidgets.QListWidget):
+class DragList(QtWidgets.QListWidget):
     def __init__(self, parent, Ui):
         super(DragList, self).__init__(parent)
         self.Ui = Ui
@@ -210,13 +210,12 @@ class Ui(QtWidgets.QDialog):
                         item = QtWidgets.QListWidgetItem()
                         item.setText("$" + str(line))
                         self.DecisionList.addItem(item)
-                        itemYes = QtWidgets.QListWidgetItem()
-                        itemYes.setText("        YES --> @")
-                        self.DecisionList.addItem(itemYes)
-                        itemNo = QtWidgets.QListWidgetItem()
-                        itemNo.setText("        NO --> @")
-                        self.DecisionList.addItem(itemNo)
-
+                        # itemYes = QtWidgets.QListWidgetItem()
+                        # itemYes.setText("        YES --> @")
+                        # self.DecisionList.addItem(itemYes)
+                        # itemNo = QtWidgets.QListWidgetItem()
+                        # itemNo.setText("        NO --> @")
+                        # self.DecisionList.addItem(itemNo)
         dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
         if len(dsd_files) != 1:
             warnings.warn("There has to be exactly one dsd-file")

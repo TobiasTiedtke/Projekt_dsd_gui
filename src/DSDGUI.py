@@ -2,50 +2,28 @@ from PyQt5 import QtWidgets, uic, QtCore, QtGui
 import os, sys
 #import qtmodern.styles
 #import qtmodern.windows
+#import SaveButton as SaveB
 import warnings
 
 dragItem = None
 
-
-class DragList(QtWidgets.QListWidget):
-    def __init__(self, parent, Ui):
-        super(DragList, self).__init__(parent)
-        self.Ui = Ui
-        self.setDragEnabled(True)
-
-    def startDrag(self, supportedActions):
-        global dragItem
-        dragItem = self.currentItem()
-#        if str(dragItem.text()).startswith("$"):
-#            print("success")
-        super(DragList, self).startDrag(supportedActions)
-
 class DropList(QtWidgets.QListWidget):
+
     def __init__(self, parent, Ui):
         super(DropList, self).__init__(parent)
         self.Ui = Ui
         self.setAcceptDrops(True)
         self.setDragEnabled(True)
 
-#ToDo: Mit DropEvent die Verarbeitung auf der rechten Seite anstoßen
+    def startDrag(self, supportedActions):
+        global dragItem
+        dragItem = self.currentItem()
+        super(DropList, self).startDrag(supportedActions)
+#ToDo: Mit DropEvent die Verarbeitung auf der rechten Seite anstoßen, SortButton löschen
     def dropEvent(self, e):
-        item = QtWidgets.QListWidgetItem()
-        item.setText(str(dragItem.text()))
-        self.addItem(item)
-        item.setFlags(item.flags() | QtCore.Qt.ItemIsEditable)
-#        super(DropList, self).dropEvent(e)
-#        QtCore.pyqtSignal()
-#        if str(dragItem.text()).startswith("$"):
-#            newText = str(dragItem.text()).split("$")[1]
-#            item = QtWidgets.QListWidgetItem()
-#            item.setText(newText)
-#            self.addItem(item)
-#        if str(dragItem.text()).startswith("        YES/NO --> @"):
-#            newText = str(dragItem.text()).split("@")[1]
-#            item = QtWidgets.QListWidgetItem()
-#            item.setText(newText)
-#            self.addItem(item)
-#            self.row(item)
+        super(DropList, self).dropEvent(e)
+        print (dragItem.text())
+
 
 # Loading UI
 class Ui(QtWidgets.QDialog):
@@ -60,12 +38,9 @@ class Ui(QtWidgets.QDialog):
         self.DSDList = DropList(self.DSDGroup, Ui)
         self.DSDList.setMinimumWidth(581)
         self.DSDList.setMinimumHeight(1024)
-        self.ActionGroup = self.findChild(QtWidgets.QGroupBox, 'groupBox_2')
-        self.ActionList = DragList(self.ActionGroup, Ui)
-        self.ActionList.setMinimumWidth(581)
-        self.ActionList.setMinimumHeight(480)
+        self.ActionList = self.findChild(QtWidgets.QListWidget, 'ActionList')
         self.DecisionGroup = self.findChild(QtWidgets.QGroupBox, 'groupBox')
-        self.DecisionList = DragList(self.DecisionGroup, Ui)
+        self.DecisionList = DropList(self.DecisionGroup, Ui)
         self.DecisionList.setMinimumWidth(581)
         self.DecisionList.setMinimumHeight(480)
         self.ReadButton = self.findChild(QtWidgets.QPushButton, 'ReadButton')
@@ -88,8 +63,12 @@ class Ui(QtWidgets.QDialog):
 
         self.DecisionEdit = self.findChild(QtWidgets.QPushButton, 'DecisionEdit')
         self.DecisionEdit.clicked.connect(self.DecisionEditClick)
+        self.DecisionList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection )
+        self.ActionList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
+        self.DSDList.setSelectionMode(QtWidgets.QAbstractItemView.ExtendedSelection)
 
         self.SortButton = self.findChild(QtWidgets.QPushButton, 'SortButton')
+        self.SortButton.clicked.connect(self.SortButtonClick)
         self.DecisionList.setDragEnabled(True)
         self.DecisionList.setAcceptDrops(False)
         self.DSDList.setDragEnabled(False)
@@ -108,6 +87,18 @@ class Ui(QtWidgets.QDialog):
                             )
         self.show()
 
+    def SortButtonClick(self):
+
+        for item in range(self.DSDList.count()):
+            for item1 in range(self.DecisionList.count()):
+                if self.DSDList.item(item).text() == self.DecisionList.item(item1).text():
+                    self.DSDList.item(item).setText("    " + str(self.DSDList.item(item).text()))
+            for item1 in range(self.ActionList.count()):
+                if self.DSDList.item(item).text() == self.ActionList.item(item1).text():
+                    self.DSDList.item(item).setText("        YES/NO --> @" + str(self.DSDList.item(item).text()))
+        for i in range(self.DSDList.count()):
+            print("T")
+                    
     def DecisionPlus(self):
         DecisionList = self.findChild(QtWidgets.QListWidget, 'DecisionList')
         item2 = QtWidgets.QListWidgetItem()
@@ -124,6 +115,12 @@ class Ui(QtWidgets.QDialog):
 
     def DecisionEditClick(self):
 
+        text, okPressed = QtWidgets.QInputDialog.getText(self, "Get text", "New Itemname:", QtWidgets.QLineEdit.Normal,
+                                                         "")
+        if okPressed and text != '':
+            self.DecisionList.addItem(text)
+
+        else:
             for i in range(self.DecisionList.count()):
                self.DecisionList.closePersistentEditor(self.DecisionList.item(i))
             sel_items = self.DecisionList.selectedItems()
@@ -132,7 +129,11 @@ class Ui(QtWidgets.QDialog):
 
                 
     def ActionEditClick(self):
-      
+        text, okPressed = QtWidgets.QInputDialog.getText(self, "Get text", "New Itemname:", QtWidgets.QLineEdit.Normal,
+                                                         "")
+        if okPressed and text != '':
+            self.ActionList.addItem(text)
+        else:
             for i in range(self.ActionList.count()):
                self.ActionList.closePersistentEditor(self.ActionList.item(i))
             sel_items = self.ActionList.selectedItems()
@@ -157,15 +158,13 @@ class Ui(QtWidgets.QDialog):
         ActionFilePath = filePath + "/actions/"
         DecisionFilePath = filePath + "/decisions/"
         self.ActionList.setDragEnabled(True)
+        self.DecisionList
         self.DecisionList.setDragEnabled(True)
         self.SingleDeleteButton.setEnabled(True)
         self.DeleteAllButton.setEnabled(True)
         self.SaveButton.setEnabled(True)
         self.EditButton.setEnabled(True)
         self.SortButton.setEnabled(True)
-        self.DSDList.clear()
-        self.DecisionList.clear()
-        self.ActionList.clear()
         # Extracting the classes in the files in the actions-Folder from the selected path and adding it to the ActionList
         onlyfiles = [f for f in os.listdir(ActionFilePath) if os.path.isfile(os.path.join(ActionFilePath, f))]
         for f in onlyfiles:
@@ -178,7 +177,7 @@ class Ui(QtWidgets.QDialog):
                         line = line.split("(")[0]
                         item = QtWidgets.QListWidgetItem()
                         self.ActionList.addItem(item)
-                        item.setText("        YES/NO --> @" + str(line))
+                        item.setText("~        YES/NO --> @" + str(line))
                         self.ActionList.addItem(item)
         # Extracting the classes in the files in the decisions-Folder from the selected path and adding it to the DecisionList
         onlyfiles = [f for f in os.listdir(DecisionFilePath) if os.path.isfile(os.path.join(DecisionFilePath, f))]
@@ -208,14 +207,8 @@ class Ui(QtWidgets.QDialog):
                         line = line.split(" ")[1]
                         line = line.split("(")[0]
                         item = QtWidgets.QListWidgetItem()
-                        item.setText("$" + str(line))
+                        item.setText("-$" + str(line))
                         self.DecisionList.addItem(item)
-                        # itemYes = QtWidgets.QListWidgetItem()
-                        # itemYes.setText("        YES --> @")
-                        # self.DecisionList.addItem(itemYes)
-                        # itemNo = QtWidgets.QListWidgetItem()
-                        # itemNo.setText("        NO --> @")
-                        # self.DecisionList.addItem(itemNo)
         dsd_files = [f for f in os.listdir(filePath) if f.endswith('.dsd')]
         if len(dsd_files) != 1:
             warnings.warn("There has to be exactly one dsd-file")
@@ -238,7 +231,7 @@ class Ui(QtWidgets.QDialog):
             #print(self.ActionList.item(item).text())
             self.EditableActionList.append(self.ActionList.item(item).text())
 
-        #print(len(self.EditableActionList))
+        print(len(self.EditableActionList))
 
 
 
@@ -276,13 +269,12 @@ class Ui(QtWidgets.QDialog):
                                                           QtWidgets.QFileDialog.ShowDirsOnly)
         # writes a file with a specific name and the structure needed for action-elements.
         completeName = os.path.join(Path, FileName + ".dsd")
-        n = self.EditableActionList.count()
-        f = open(completeName, 'a')
+        f = open(completeName, 'w')
+        print(self.DSDList.count())
         for i in range(self.DSDList.count()):
             string = self.DSDList.item(i).text()
-            f.write(string + "\n" + n)
+            f.write(string + "\n")
         f.close()
-
 
         for i in range(self.ActionList.count()):
             if not self.ActionList.item(i).text() in self.EditableActionList:
@@ -305,10 +297,50 @@ class Ui(QtWidgets.QDialog):
                 a.write("#TODO: write your own code here.\n")
                 a.write("\n")
                 a.close()
-        f = open(completeName, 'w')
-        for i in range(self.DSDList.count()):
-            string = self.DSDList.item(i).text()
-            f.write(string + "\n")
+
+            for i in range(self.ActionList.count()):
+                if not self.ActionList.item(i).text() in self.EditableActionList:
+                    path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select a folder:', "-/Desktop/",
+                                                                      QtWidgets.QFileDialog.ShowDirsOnly)
+                    fileName = str(self.ActionList.item(i).text())
+                    y = str(self.ActionList.item(i).text())
+                    completeName = os.path.join(path, fileName + ".py")
+                    a = open(completeName, 'a')
+                    a.write("from dynamic_stack_decider.abstract_action_element import AbstractActionElement\n")
+                    a.write("\n")
+                    a.write("class " + str(y) + "(AbstractActionElement):\n")
+                    a.write("    def __init__(self, blackboard, dsd, parameters=None):\n")
+                    a.write("        super(" + y + ", self).__init__(blackboard, dsd, parameters)\n")
+                    a.write("\n")
+                    a.write("#TODO: write your own code here.\n")
+                    a.write("\n")
+                    a.write("    def perform(self, reevaluate=False):\n")
+                    a.write("\n")
+                    a.write("#TODO: write your own code here.\n")
+                    a.write("\n")
+                    a.close()
+
+            for i in range(self.DecisionList.count()):
+                if not self.DecisionList.item(i).text() in self.EditableDecisionList:
+                    path = QtWidgets.QFileDialog.getExistingDirectory(self, 'Select a folder:', "-/Desktop/",
+                                                                      QtWidgets.QFileDialog.ShowDirsOnly)
+                    fileName = str(self.DecisionList.item(i).text())
+                    y = str(self.DecisionList.item(i).text())
+                    completeName = os.path.join(path, fileName + ".py")
+                    a = open(completeName, 'a')
+                    a.write("from dynamic_stack_decider.abstract_action_element import AbstractActionElement\n")
+                    a.write("\n")
+                    a.write("class " + str(y) + "(AbstractActionElement):\n")
+                    a.write("    def __init__(self, blackboard, dsd, parameters=None):\n")
+                    a.write("        super(" + y + ", self).__init__(blackboard, dsd, parameters)\n")
+                    a.write("\n")
+                    a.write("#TODO: write your own code here.\n")
+                    a.write("\n")
+                    a.write("    def perform(self, reevaluate=False):\n")
+                    a.write("\n")
+                    a.write("#TODO: write your own code here.\n")
+                    a.write("\n")
+                    a.close()
 
 
 if __name__ == '__main__':
